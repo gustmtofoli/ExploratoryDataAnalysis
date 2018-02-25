@@ -12,3 +12,5 @@ dim(stateSubset)
 
 stateSubsetBracket <- statesInfo[statesInfo$state.region == 1, ]
 stateSubsetBracket
+
+qplot(data = reddit, x = income.range)
