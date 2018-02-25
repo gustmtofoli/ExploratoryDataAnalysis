@@ -1,1 +1,1 @@
-# R
+# Exploratory data analysis in R
