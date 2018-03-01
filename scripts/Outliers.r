@@ -1,21 +1,16 @@
-values <- read.csv('test-outliers.csv')
-outliers_values <- boxplot.stats(values$valor.procedimento)$out # get outliers
-outliers_values
+library(plyr)
 
-outliers_info <- subset(values, values$valor.procedimento == outliers_values)
-
-# =========================================================================
-
-# obter outliers de um grupo de valores já filtrado
+count = 0
 procedures <- read.csv('exportar_procedimento_executado.csv', sep = '\t')
-procedures_sub <- subset(procedures,procedures$CODIGO_PROCEDIMENTO == "40302423" & !is.null(procedures$VALOR_TOTAL))
-procedures_sub$VALOR_TOTAL
-
-n <- length(procedures_sub$VALOR_TOTAL) # quantidade de elementos no vetor
-
-index <- c(factor(1:n)) # cria vetor de 1 até quantidade de elementos no vetor
-
-outliers_values <- boxplot.stats(procedures_sub$VALOR_TOTAL)$out
-outliers_values
-
-# TODO agrupar grupos automaticamente
+for(cp in sort(unique(procedures$CODIGO_PROCEDIMENTO))) {
+  procedures_subset <- subset(procedures, procedures$CODIGO_PROCEDIMENTO == cp)
+  outliers <- boxplot.stats(procedures_subset$VALOR_TOTAL)$out
+  if (length(outliers) != 0) {
+    count <- count + 1
+    df_codproc_outliers <- data.frame(CODIGO_PROCEDIMENTO = c(cp), OUTLIERS = c(outliers))
+    df_codproc_outliers_count <- count(df_codproc_outliers, c("CODIGO_PROCEDIMENTO", "OUTLIERS"))
+    df_codproc_outliers_aggregate <- aggregate(df_codproc_outliers_count$freq, by = list(df_codproc_outliers_count$CODIGO_PROCEDIMENTO), FUN = sum)
+    print(df_codproc_outliers_count)
+  }
+}
+count
