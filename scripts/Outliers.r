@@ -1,6 +1,6 @@
 library(plyr)
 
-count = 0
+procedures_with_outliers = 0
 procedures <- read.csv('exportar_procedimento_executado.csv', sep = '\t')
 for(cp in sort(unique(procedures$CODIGO_PROCEDIMENTO))) {
   procedures_subset <- subset(procedures, procedures$CODIGO_PROCEDIMENTO == cp)
@@ -13,4 +13,4 @@ for(cp in sort(unique(procedures$CODIGO_PROCEDIMENTO))) {
     print(df_codproc_outliers_count)
   }
 }
-count
+procedures_with_outliers

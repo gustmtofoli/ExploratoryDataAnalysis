@@ -40,3 +40,4 @@ aggregate(procedures$VALOR_TOTAL, by=list(procedures$CODIGO_PROCEDIMENTO), FUN =
 # número de vezes que uma variável ocorreu
 count(procedures, "CODIGO_PROCEDIMENTO") 
 count(procedures, "VALOR_TOTAL")
+#==============================================================================
