@@ -25,3 +25,8 @@ qplot(data = pf, x = dob_day) +
   scale_x_continuous(breaks = 1:31) +
   facet_wrap(~dob_month, ncol = 4)
 
+qplot(data = pf, x = friend_count, xlim = c(1,1000))
+
+qplot(data = pf, x = friend_count) +
+  scale_x_continuous(limits = c(1, 1000))
+
