@@ -17,5 +17,11 @@ qplot(data = reddit, x = income.range)
 
 # ================================================
 
+library(ggplot2)
+library(ggthemes)
 pf <- read.csv('pseudo_facebook.tsv', sep = '\t')
 names(pf) # exibe todas as variáveis
+qplot(data = pf, x = dob_day) +
+  scale_x_continuous(breaks = 1:31) +
+  facet_wrap(~dob_month, ncol = 4)
+
