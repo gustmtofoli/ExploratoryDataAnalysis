@@ -48,4 +48,46 @@ qplot(data = pf, x = friend_count, binwidth = 25) +
 qplot(data = subset(pf, !is.na(gender)), x = friend_count, binwidth = 25) +
   scale_x_continuous(limits = c(1, 1000), breaks = seq(0, 1000, 50)) +
   facet_wrap(~gender)
-  
+
+# total de homens e mulheres
+table(pf$gender)  
+
+# apresenta dados estatísticos sobre a quantidade de amigos para cada genero
+by(pf$friend_count, pf$gender, summary)
+
+# apresenta dados estatísticos sobre uma variável
+summary(pf$age)
+
+# gráfico azul com borda preta de tenure em função dos dias
+qplot(data = pf, x = tenure, binwidth = 30, color = I('black'), fill = I('#099DD9'))
+
+# adicionando cor de preenchimento e borda e labels no gráfico
+qplot(data = pf, x = tenure/365, binwidth = .25, 
+      xlab = 'Numbers of years using facebook',
+      ylab = 'Number of users in sample',
+      color = I('black'), fill = I('#099DD9')) +
+  scale_x_continuous(breaks = seq(1, 7, 1), limits = c(0, 7))
+ 
+# gráfico da idade dos usuários do facebook
+qplot(data = pf, x = age, binwidth = 1, color = I('#0D47A1'), fill = I('#2196F3'), 
+      xlab = 'Age', ylab = 'Number of users in sample') +
+  scale_x_continuous(breaks = seq(13, 113, 5), limits = c(13, 113))
+
+# cria gráticos com escalas de log e sqrt e plota vários vários gráficos em uma só janela
+library(gridExtra)
+summary(log10(pf$friend_count+1))
+summary(sqrt(pf$friend_count))
+p1 <- qplot(data = pf, x = friend_count)
+p2 <- qplot(data = pf, x = log10(friend_count) + 1)
+p3 <- qplot(data = pf, x = sqrt(friend_count))
+grid.arrange(p1, p2, p3)
+#or
+pl1 <- ggplot(data = pf, aes(x = friend_count)) + geom_histogram()
+pl2 <- pl1 + scale_x_log10()
+pl3 <- pl1 + scale_x_sqrt()
+grid.arrange(pl1, pl2, pl3)
+
+# gráfico de polígonos de frequencia para gênero
+qplot(data = subset(pf, !is.na(pf$gender)), x = friend_count, binwidth = 10,
+      geom = 'freqpoly', color = gender) +
+  scale_x_continuous(breaks = seq(0, 1000, 50), limits = c(0, 1000))
