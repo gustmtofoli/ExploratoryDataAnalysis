@@ -114,3 +114,16 @@ qplot(data = subset(pf, !is.na(pf$gender)), x = gender, y = friendships_initiate
 
 by(pf$friendships_initiated, pf$gender, summary)
 
+# mediana 4.0 significa que exitem muitos zeros como valores na variável
+summary(pf$mobile_likes)
+
+# se variável maior que zero então valor 1 senão 0
+pf$mobile_check_in <- ifelse(pf$mobile_likes > 0, 1, 0)
+
+# convertendo em variável de fator
+pf$mobile_check_in <- factor(pf$mobile_check_in)
+summary(pf$mobile_check_in)
+#or
+summary(pf$mobile_likes > 0)
+
+sum(pf$mobile_check_in == 1)/length(pf$mobile_check_in)
