@@ -12,3 +12,5 @@ max(diamonds$price)
 qplot(data = diamonds, x = diamonds$price, binwidth = 100,
       color = I("black")) +
   facet_wrap(~cut)
+
+by(diamonds$price, diamonds$cut, summary)
