@@ -77,3 +77,4 @@ ggplot(data = pf, aes(x = age, y = friend_count)) +
   geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue') +
   geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue') +
   geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
+
