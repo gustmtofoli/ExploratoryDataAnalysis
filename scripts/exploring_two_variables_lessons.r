@@ -30,5 +30,29 @@ ggplot(data = pf, aes(x = age, y = friendships_initiated)) +
 
 library(dplyr)
 
-group_by(pf, age)
+# agrupa por alguma variável, no caso, 'age'
+age_groups <- group_by(pf, age)
 
+# mostra a idade, mediana do número de amigos, média do número de amigos e número de usuários que pertence a esse grupo
+pf.fc_by_age <- summarise(age_groups, 
+          friend_count_mean = mean(friend_count),
+          friend_count_median = median(friend_count),
+          n = n())
+
+pf.fc_by_age <- arrange(pf.fc_by_age, age)
+
+head(pf.fc_by_age)
+#or
+pf.fc_by_age_2 <- pf %>% 
+  group_by(age) %>%
+  summarise(friend_count_mean = mean(friend_count),
+            friend_count_median = median(friend_count),
+            n = n()) %>%
+  arrange(age)
+
+head(pf.fc_by_age_2, 20)
+
+ggplot(data = pf.fc_by_age, aes(x = age, y = friend_count_mean)) +
+  geom_line()
+
+  
