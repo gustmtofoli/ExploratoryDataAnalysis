@@ -17,15 +17,18 @@ summary(pf$age)
 # adicionando uma transformação raiz quadrada no gráfico.
 # 'position' permite adicionar jitter juntamente com transformações de escala
 ggplot(data = pf, aes(x = age, y = friend_count)) + 
-  geom_jitter(alpha = 1/20, position = position_jitter(h = 0)) +
+  geom_jitter(alpha = 1/20, position = position_jitter(h = 0), color = 'orange') +
   xlim(13, 90) +
-  coord_trans(y = 'sqrt')
+  coord_trans(y = 'sqrt') +
+  geom_line(stat = 'summary', fun.y = mean)
+
 
 
 ggplot(data = pf, aes(x = age, y = friendships_initiated)) +
   geom_jitter(alpha = 1/20, position = position_jitter(h = 0)) +
   xlim(13, 113) +
   coord_trans(y = 'sqrt')
+  
 
 
 library(dplyr)
@@ -52,7 +55,25 @@ pf.fc_by_age_2 <- pf %>%
 
 head(pf.fc_by_age_2, 20)
 
+# adicionando linha entre os pontos do gráfico de dispersão
 ggplot(data = pf.fc_by_age, aes(x = age, y = friend_count_mean)) +
   geom_line()
 
-  
+# adicionando linhas da média, 10%, 50%, 90% no gráfico de dispersão
+ggplot(data = pf, aes(x = age, y = friend_count)) + 
+  geom_jitter(alpha = 1/20, position = position_jitter(h = 0), color = 'orange') +
+  xlim(13, 90) +
+  coord_trans(y = 'sqrt') +
+  geom_line(stat = 'summary', fun.y = mean) +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
+
+# adicionando linhas da média, 10%, 50%, 90% no gráfico de dispersão e dando zoom
+ggplot(data = pf, aes(x = age, y = friend_count)) + 
+  geom_jitter(alpha = 1/20, position = position_jitter(h = 0), color = 'orange') +
+  coord_cartesian(xlim = c(13, 70), ylim = c(0, 1000)) +
+  geom_line(stat = 'summary', fun.y = mean) +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
