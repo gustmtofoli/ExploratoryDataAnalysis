@@ -119,3 +119,7 @@ ggplot(data = pf, aes(x = www_likes_received, y = likes_received)) +
 # número é alto porque um conjunto é um subconjunto do outro. (natureza das variáveis)
 with(pf, cor.test(likes_received, www_likes_received))
 
+library(lme4)
+library(alr3)
+
+data(Mitchel)
