@@ -119,7 +119,61 @@ ggplot(data = pf, aes(x = www_likes_received, y = likes_received)) +
 # número é alto porque um conjunto é um subconjunto do outro. (natureza das variáveis)
 with(pf, cor.test(likes_received, www_likes_received))
 
+# =========================================================
+
 library(lme4)
 library(alr3)
 
 data(Mitchel)
+
+
+# =========================================================
+
+# média do número de amigos pela idade por mês
+# agrupa por alguma variável, no caso, 'age'
+age_groups <- group_by(pf, age)
+
+# mostra a idade, mediana do número de amigos, média do número de amigos e número de usuários que pertence a esse grupo
+pf.fc_by_age <- summarise(age_groups, 
+                          friend_count_mean = mean(friend_count),
+                          friend_count_median = median(friend_count),
+                          n = n())
+
+# ordena por idade
+pf.fc_by_age <- arrange(pf.fc_by_age, age)
+
+plot_by_age <- ggplot(data = subset(pf.fc_by_age, age < 71), aes(x = age, y = friend_count_mean)) +
+  geom_line() +
+  geom_smooth()
+
+head(pf.fc_by_age, 10)
+
+pf.fc_by_age[17:19, ]
+
+
+
+# média do número de amigos pela idade por mês
+pf$age_with_months <- pf$age + (12 - pf$dob_month)/12
+
+month_groups <- group_by(pf, age_with_months)
+
+pf.fc_by_month <- summarise(month_groups, 
+                            friend_count_mean_month = mean(friend_count),
+                            friend_count_median_month = median(friend_count),
+                            n = n())
+
+arrange(pf.fc_by_month, age_with_months)
+
+head(pf.fc_by_month, 10)
+
+plot_by_month <- ggplot(data = subset(pf.fc_by_month, age_with_months < 71), aes(x = age_with_months, y = friend_count_mean_month)) +
+  geom_line() +
+  geom_smooth()
+
+plot_by_month_five <-  ggplot(data = subset(pf, age < 71), aes(x = round(age / 5) * 5, y = friend_count)) +
+  geom_line(stat = "summary", fun.y = mean)
+
+
+library(gridExtra)
+
+grid.arrange(plot_by_age, plot_by_month, plot_by_month_five, ncol = 1)
