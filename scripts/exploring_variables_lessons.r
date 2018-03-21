@@ -19,7 +19,6 @@ qplot(data = reddit, x = income.range)
 
 library(ggplot2)
 library(ggthemes)
-pf <- read.csv('pseudo_facebook.tsv', sep = '\t')
 
 # exibe todas as variáveis
 names(pf) 
