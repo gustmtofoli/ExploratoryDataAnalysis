@@ -47,3 +47,12 @@ head(pf.fc_by_age_gender.wide)
 ggplot(data = pf.fc_by_age_gender.wide, aes(x = age, y = female/male)) +
   geom_line() +
   geom_hline(yintercept = 1, alpha = 0.3, linetype = 2)
+
+# year that each user joined facebook.
+pf$year_joined <- floor(2014 - pf$tenure/365)
+summary(pf$year_joined)
+table(pf$year_joined)
+
+# cut function ... year that each user joined facebook grouped by year "buckets"
+pf$year_joined.bucket <- cut(pf$year_joined, 
+                             c(2004, 2009, 2011, 2012, 2014))
