@@ -56,3 +56,9 @@ table(pf$year_joined)
 # cut function ... year that each user joined facebook grouped by year "buckets"
 pf$year_joined.bucket <- cut(pf$year_joined, 
                              c(2004, 2009, 2011, 2012, 2014))
+
+table(pf$year_joined.bucket, useNA = 'ifany')
+
+ggplot(data = subset(pf, !is.na(year_joined.bucket)), aes(x = age, y = friend_count)) +
+  geom_line(aes(color = year_joined.bucket), stat = "summary", fun.y = mean) +
+  geom_line(stat = "summary", fun.y = mean, linetype = 2)
