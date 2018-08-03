@@ -62,3 +62,45 @@ table(pf$year_joined.bucket, useNA = 'ifany')
 ggplot(data = subset(pf, !is.na(year_joined.bucket)), aes(x = age, y = friend_count)) +
   geom_line(aes(color = year_joined.bucket), stat = "summary", fun.y = mean) +
   geom_line(stat = "summary", fun.y = mean, linetype = 2)
+
+
+# how many friends users have for each day since they joined the facebook
+labels(pf)
+
+with(data = subset(pf, tenure >= 1), summary(friend_count / tenure))
+
+
+# Create a line graph of mean of friendships_initiated per day (of tenure)
+# vs. tenure colored by year_joined.bucket.
+
+# You need to make use of the variables tenure,
+# friendships_initiated, and year_joined.bucket.
+
+# You also need to subset the data to only consider user with at least
+# one day of tenure.
+
+ggplot(data = subset(pf, tenure >= 1), 
+       aes(x = 7*round(tenure/7), y = friendships_initiated / tenure)) +
+  geom_line(aes(color = year_joined.bucket), stat = "summary", fun.y = mean)
+
+# with smooth
+ggplot(data = subset(pf, tenure >= 1), 
+       aes(x = 7*round(tenure/7), y = friendships_initiated / tenure)) +
+  geom_smooth(aes(color = year_joined.bucket))
+
+
+#====================================================
+
+# yogurt dataset
+
+yo <- read.csv("yogurt.csv")
+summary(yo)
+str(yo)
+
+yo$id <- factor(yo$id)
+
+labels(yo)
+
+#histogram of prices
+ggplot(data = yo, aes(x = price)) +
+  geom_histogram()
