@@ -104,3 +104,9 @@ labels(yo)
 #histogram of prices
 ggplot(data = yo, aes(x = price)) +
   geom_histogram()
+
+yo <- transform(yo, all.purchases = strawberry + blueberry + pina.colada + plain + mixed.berry)
+summary(yo$all.purchases)
+
+ggplot(data = yo, aes(x = time, y = price)) +
+  geom_dotplot()
