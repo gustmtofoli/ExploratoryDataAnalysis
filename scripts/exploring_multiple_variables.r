@@ -101,7 +101,7 @@ yo$id <- factor(yo$id)
 
 labels(yo)
 
-#histogram of prices
+# histogram of prices
 ggplot(data = yo, aes(x = price)) +
   geom_histogram()
 
@@ -109,4 +109,36 @@ yo <- transform(yo, all.purchases = strawberry + blueberry + pina.colada + plain
 summary(yo$all.purchases)
 
 ggplot(data = yo, aes(x = time, y = price)) +
-  geom_dotplot()
+  geom_jitter(alpha = 1/4)
+
+set.seed(1356)
+sample.ids <- sample(levels(yo$id), 16)
+
+ggplot(data = subset(yo, id %in% sample.ids), aes(x = time, y = price)) +
+  facet_wrap( ~ id) +
+  geom_line() +
+  geom_point(aes(sizes = all.purchases), pch = 1)
+
+
+# scatterplot matrices
+install.packages('GGally')
+library(GGally)
+
+theme_set(theme_minimal(20))
+set.seed(1836)
+pf_subset <- pf[, c(2:15)]
+names(pf_subset)
+ggpairs(pf_subset[sample.int(nrow(pf_subset), 10), ])
+
+# genes data - heat map
+library(reshape2)
+
+nci <- read.table('nci.tsv')
+nci.long.samp <- melt(as.matrix(nci[1:200, ]))
+names(nci.long.samp) <- c('gene', 'case', 'value')
+head(nci.long.samp)
+
+# make the heat map
+ggplot(data = nci.long.samp, aes(y = gene, x = case, fill = value)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = colorRampPalette(c('blue', 'red'))(100))
