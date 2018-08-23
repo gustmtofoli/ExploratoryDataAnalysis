@@ -142,3 +142,15 @@ head(nci.long.samp)
 ggplot(data = nci.long.samp, aes(y = gene, x = case, fill = value)) +
   geom_tile() +
   scale_fill_gradientn(colors = colorRampPalette(c('blue', 'red'))(100))
+
+
+# diamonds data set
+library(ggplot2)
+data(diamonds)
+summary(diamonds)
+
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+  geom_point(alpha = 1/4) +
+  stat_smooth(method = 'lm') +
+  xlim(0, quantile(diamonds$carat, 0.99)) +
+  ylim(0, quantile(diamonds$price, 0.99))
